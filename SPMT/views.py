@@ -207,9 +207,9 @@ def submit_project(request):
         if not subject_name or not subject_code or not matriculation_number:
             messages.error(request, 'Please fill all required fields.')
             return render(request, 'SPMT/student_dashboard.html', {
-                'form': ProjectSubmissionForm(),git remote -v
+                'form': ProjectSubmissionForm(),
                 'submissions': ProjectSubmission.objects.filter(student=request.user),
-            })git remote -v
+            })
         # Create and save the project submission manually
         project_submission = ProjectSubmission(
             subject_name=subject_name,
