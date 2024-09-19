@@ -1,0 +1,377 @@
+{% load widget_tweaks %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - Student Project Management Tool</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            background: linear-gradient(to bottom right, #4a90e2, #50e3c2);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            margin: 0;
+        }
+        .card {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            width: 100%;
+            max-width: 600px;
+        }
+        .btn-custom {
+            border-radius: 30px;
+            padding: 10px 20px;
+            font-size: 18px;
+            margin: 10px;
+        }
+        #professor-login-form {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            margin: auto;
+        }
+
+        .login-header h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-label {
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .form-control {
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            padding: 0.75rem 1.25rem;
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border: none;
+            color: white;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            color: white;
+        }
+
+        .w-100 {
+            width: 100%;
+        }
+
+        .py-2 {
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem;
+        }
+        .btn-student {
+            background-color: #2ecc71;
+            color: white;
+        }
+        .btn-professor {
+            background-color: #3498db;
+            color: white;
+        }
+        .login-btn {
+            border-radius: 30px;
+        }
+        #student-login-form, #student-signup-form, #professor-login-form {
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+        .login-header {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+        }
+        .form-group label {
+            font-weight: bold;
+            color:black;
+        }
+        .form-group input {
+            border-radius: 5px;
+        }
+        .text-center a {
+            color: #3498db;
+        }
+        .text-center a:hover {
+            text-decoration: underline;
+        }
+        #message-container {
+            transition: opacity 0.5s ease-out; /* Smooth transition for fading out */
+            margin-bottom: 20px;
+        }
+        .alert-success {
+            color: #155724;
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+            padding: 0.75rem 1.25rem;
+            border-radius: 0.375rem;
+        }
+
+        /* Error message styling */
+        .alert-danger {
+            color: #721c24;
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+            padding: 0.75rem 1.25rem;
+            border-radius: 0.375rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <h2 class="text-center text-dark mb-4">Student Project Management Tool</h2>
+        <p class="text-center text-muted mb-4">Please choose your role to log in</p>
+
+        <div class="text-center mb-4">
+            <button class="btn btn-custom btn-student" onclick="showForm('student-login')">
+                <i class="fas fa-user-graduate"></i> Student
+            </button>
+            <button class="btn btn-custom btn-professor" onclick="showForm('professor-login')">
+                <i class="fas fa-chalkboard-teacher"></i> Professor
+            </button>
+        </div>
+{% if messages %}
+        <div id="message-container">
+        {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                        {{ message }}
+                </div>
+        {% endfor %}
+    </div>
+{% endif %}
+
+        <!-- Student Login Form (hidden initially) -->
+<div class="container mt-4" id="student-login-form">
+    <div class="login-header text-center text-success">Student Login</div>
+    <form id="login-form" method="post" action="{% url 'student_login' %}">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="id_username">Username</label>
+            {{ student_login_form.username|add_class:"form-control" }}
+        </div>
+
+        <div class="form-group">
+            <label for="id_password">Password</label>
+            {{ student_login_form.password|add_class:"form-control" }}
+        </div>
+        <button type="submit" class="btn btn-success login-btn w-100">Login</button>
+        <div class="text-center mt-3">
+            <a href="#" onclick="showForm('student-signup')" class="text-success">Create Student Account</a>
+        </div>
+        <div id="error-message" class="text-center text-danger mt-3"></div>
+    </form>
+</div>
+        <!-- Student Signup Form -->
+<div class="mt-4" id="student-signup-form">
+    <div class="login-header text-center text-success">Student Signup</div>
+
+    <form id="signup-form" method="post" action="{% url 'signup_view' %}">
+        {% csrf_token %}
+
+        <!-- Non-field errors -->
+        {% if student_signup_form.non_field_errors %}
+            <div class="alert alert-danger">
+                {{ student_signup_form.non_field_errors }}
+            </div>
+        {% endif %}
+
+        <!-- First Name -->
+        <div class="form-group">
+            {{ student_signup_form.first_name.label_tag }}
+            {{ student_signup_form.first_name|add_class:"form-control" }}
+            {% if student_signup_form.first_name.errors %}
+                <div class="errorlist">
+                    {{ student_signup_form.first_name.errors }}
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- Last Name -->
+        <div class="form-group">
+            {{ student_signup_form.last_name.label_tag }}
+            {{ student_signup_form.last_name|add_class:"form-control" }}
+            {% if student_signup_form.last_name.errors %}
+                <div class="errorlist">
+                    {{ student_signup_form.last_name.errors }}
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- Email -->
+        <div class="form-group">
+            {{ student_signup_form.email.label_tag }}
+            {{ student_signup_form.email|add_class:"form-control" }}
+            {% if student_signup_form.email.errors %}
+                <div class="errorlist">
+                    {{ student_signup_form.email.errors }}
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- Mobile Number -->
+        <div class="form-group">
+            {{ student_signup_form.mobile_number.label_tag }}
+            {{ student_signup_form.mobile_number|add_class:"form-control" }}
+            {% if student_signup_form.mobile_number.errors %}
+                <div class="errorlist">
+                    {{ student_signup_form.mobile_number.errors }}
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- Username -->
+        <div class="form-group">
+            {{ student_signup_form.username.label_tag }}
+            {{ student_signup_form.username|add_class:"form-control" }}
+            {% if student_signup_form.username.errors %}
+                <div class="errorlist">
+                    {{ student_signup_form.username.errors }}
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- Password1 -->
+        <div class="form-group">
+            {{ student_signup_form.password1.label_tag }}
+            {{ student_signup_form.password1|add_class:"form-control" }}
+            {% if student_signup_form.password1.errors %}
+                <div class="errorlist">
+                    {{ student_signup_form.password1.errors }}
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- Password2 -->
+        <div class="form-group">
+            {{ student_signup_form.password2.label_tag }}
+            {{ student_signup_form.password2|add_class:"form-control" }}
+            {% if student_signup_form.password2.errors %}
+                <div class="errorlist">
+                    {{ student_signup_form.password2.errors }}
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- Submit button -->
+        <button type="submit" name="student_signup" class="btn btn-success login-btn w-100">Sign Up</button>
+
+        <!-- Link to login form -->
+        <div class="text-center mt-3">
+            <a href="#" onclick="showForm('student-login')" class="text-success">Already have an account? Login</a>
+        </div>
+    </form>
+        </div>
+
+
+        <!-- Professor Login Form (hidden initially) -->
+    <div class="mt-4" id="professor-login-form">
+        <form method="post" action="{% url 'professor_login' %}">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="{{ professor_login_form.security_code.id_for_label }}">Security Code</label>
+                {{ professor_login_form.security_code|add_class:"form-control" }}
+            </div>
+            <button type="submit" class="btn btn-primary login-btn w-100">Login</button>
+        </form>
+    </div>
+    </div>
+    <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="errorModalLabel">Login Error</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="errorModalMessage">
+                <!-- Error message will be inserted here -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+ <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Function to hide message container after a delay
+        function hideMessageAfterDelay() {
+            var messageContainer = document.getElementById('message-container');
+            if (messageContainer) {
+                setTimeout(function() {
+                    messageContainer.style.opacity = 0;
+                    setTimeout(function() {
+                        messageContainer.style.display = 'none';
+                    }, 500);
+                }, 4000);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            hideMessageAfterDelay();
+        });
+
+        function showForm(formId) {
+            document.getElementById('student-login-form').style.display = 'none';
+            document.getElementById('student-signup-form').style.display = 'none';
+            document.getElementById('professor-login-form').style.display = 'none';
+
+            document.getElementById(formId + '-form').style.display = 'block';
+        }
+
+        document.getElementById('login-form').onsubmit = function(e) {
+            e.preventDefault(); // Prevent the form from submitting the default way
+
+            let formData = new FormData(this);
+
+            fetch("{% url 'student_login' %}", {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest' // Ensure the server knows it's an AJAX request
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    window.location.href = data.redirect_url;
+                } else {
+                    document.getElementById('error-message').textContent = data.error;
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        };
+    </script>
+</body>
+</html>

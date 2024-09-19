@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup Successful</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(to bottom right, #4a90e2, #50e3c2);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            margin: 0;
+        }
+        .card {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            width: 100%;
+            max-width: 600px;
+        }
+        .btn-custom {
+            border-radius: 30px;
+            padding: 10px 20px;
+            font-size: 18px;
+            margin: 10px;
+        }
+        .btn-student {
+            background-color: #2ecc71;
+            color: white;
+        }
+        .btn-professor {
+            background-color: #3498db;
+            color: white;
+        }
+        .login-btn {
+            border-radius: 30px;
+        }
+        .text-center a {
+            color: #3498db;
+        }
+        .text-center a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h2 class="text-center text-dark mb-4">Student Signup Successful</h2>
+        <p class="text-center text-muted mb-4">Your account has been created successfully. Click the button below to log in.</p>
+        <div class="text-center mb-4">
+            <a href="{% url 'home' %}" class="btn btn-success login-btn w-100">Login</a>
+        </div>
+    </div>
+</body>
+</html>
