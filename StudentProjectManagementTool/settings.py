@@ -43,7 +43,7 @@ SECRET_KEY = 'django-insecure-&8%jushf%#lhlw7*v69^tr90+@58^noow$6a&7u_di_5*a!1r1
 DEBUG = True
 
 #ALLOWED_HOSTS = ['*']
-ALLOWED_HOSTS = ['SPMT.onrender.com']
+ALLOWED_HOSTS = ['student-project-management-tool.onrender.com']
 
 # Application definition
 
